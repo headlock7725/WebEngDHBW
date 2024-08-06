@@ -23,11 +23,6 @@ async function login(username, password) {
     }
 }
 
-function logout() {
-    localStorage.removeItem('authToken');
-    // Additional logout logic if needed
-}
-
 export function loginValidator(){
     const loginForm = document.getElementById('login-form');
     const errorMessage = document.getElementById('error-message');

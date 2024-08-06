@@ -3,15 +3,19 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    width: 100%;
     background-color: #f4f4f4;
+    overflow-x: hidden;
 }
 
 /* Login styles */
 
 #login-container {
-    max-width: 400px;
-    margin: 250px auto;
+    max-width: 25vw;
+    margin: auto;
+    margin-top: 25vh;
     padding: 20px;
+    flex: 1;
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
@@ -54,4 +58,44 @@ body {
 #error-message {
     text-align: center;
     margin-top: 10px;
+}
+
+/* Header styles */
+
+header {
+    background-color: #f0f0f0; /* Light gray background */
+    padding: 15px;
+    display: flex; /* Use flexbox for easy alignment */
+    justify-content: space-between; /* Space between left and right elements */
+    align-items: center; /* Vertically center items */
+  }
+  
+  /* Logout Button Styling */
+  #logout-button {
+    min-width: 100px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 1vh 1vw;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  #logout-button:hover {
+    background-color: #c82333;
+  }
+
+
+/* Sidebar styles */
+
+.sidebar {
+    width: 30vh; /* Adjust sidebar width as needed */
+    background-color: #f0f0f0;
+    padding: 20px;
+    position: fixed; /* Fix the sidebar to the viewport */
+    top: 0;
+    left: 0;
+    height: 100vh; /* Make the sidebar span the entire viewport height */
 }

@@ -1,3 +1,8 @@
+async function listDirectories(params) {
+    
+}
+
+
 async function createDirectory(path, token) {
     const response = await fetch(`${API_BASE_URL}/${path}`, {
         method: 'POST',
