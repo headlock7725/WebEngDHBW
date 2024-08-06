@@ -22,3 +22,12 @@ function getCookie(name) {
     }
     return null;
 }
+
+
+function login(username, password) {
+    // Handle user login
+}
+
+function logout() {
+    // Handle user logout
+}
