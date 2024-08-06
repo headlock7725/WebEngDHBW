@@ -1,9 +1,8 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Initialize the application
-    initApp();
-});
-
-function initApp() {
-    // Your initialization code here
-    console.log('App initialized');
+import{
+    loginValidator
 }
+from './auth.js'
+
+document.addEventListener('DOMContentLoaded', () => {
+    loginValidator();
+});

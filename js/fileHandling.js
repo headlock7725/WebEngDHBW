@@ -1,15 +1,25 @@
-function uploadFile(file) {
-    // Handle file upload
+async function uploadFile(file, path, token) {
+    const formData = new FormData();
+    formData.append('newFile', file);
+
+    const response = await fetch(`${API_BASE_URL}/${path}`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Basic ${btoa(`admin:${token}`)}`
+        },
+        body: formData
+    });
+    return response.json();
 }
 
-function downloadFile(fileName) {
-    // Handle file download
+async function deleteFile(path, token) {
+    const response = await fetch(`${API_BASE_URL}/${path}`, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Basic ${btoa(`admin:${token}`)}`
+        }
+    });
+    return response.json();
 }
 
-function deleteFile(fileName) {
-    // Handle file deletion
-}
-
-function editFile(fileName, content) {
-    // Handle file editing
-}
+// Add more file handling functions as needed

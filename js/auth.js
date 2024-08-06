@@ -1,33 +1,59 @@
-//SuperSAFE Credential Storage
-const login = "admin";
-const passwd = "admin";
-
-function createCookie(name, value, days) {
-    let expires = "";
-    if (days) {
-        const date = new Date();
-        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-        expires = "; expires=" + date.toUTCString();
-    }
-    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+async function requestToken(username, password) {
+    const response = await fetch('http://localhost:8080/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+            username: username,
+            password: password
+        })
+    });
+    return response.json();
 }
 
-function getCookie(name) {
-    const nameEQ = name + "=";
-    const ca = document.cookie.split(';');
-    for(let i = 0; i < ca.length; i++) {
-        let c = ca[i];
-        while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+async function login(username, password) {
+    const result = await requestToken(username, password);
+    if (result.token) {
+        localStorage.setItem('authToken', result.token);
+        return true;
+    } else {
+        console.error('Authentication failed');
+        return false;
     }
-    return null;
-}
-
-
-function login(username, password) {
-    // Handle user login
 }
 
 function logout() {
-    // Handle user logout
+    localStorage.removeItem('authToken');
+    // Additional logout logic if needed
+}
+
+export function loginValidator(){
+    const loginForm = document.getElementById('login-form');
+    const errorMessage = document.getElementById('error-message');
+    const loginContainer = document.getElementById('login-container');
+    const mainContent = document.getElementById('main-content');
+
+    loginForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        const success = await login(username, password);
+        if (success) {
+            loginContainer.style.display = 'none';
+            mainContent.style.display = 'block';
+        } else {
+            errorMessage.textContent = 'Invalid username or password';
+            errorMessage.style.display = 'block';
+        }
+    });
+
+    // Check if the user is already logged in
+    const token = localStorage.getItem('authToken');
+    if (token) {
+        loginContainer.style.display = 'none';
+        mainContent.style.display = 'block';
+    }
 }
