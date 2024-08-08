@@ -1,4 +1,19 @@
+import {
+    logout
+}
+from './auth.js'
+
 const API_BASE_URL = 'http://localhost:8080';
+
+//Function to deal with errors in requests or unauthorized requests
+function responseHandler(response) {
+    if (response.error){
+        if (response.error.includes("auth")){
+            logout();
+        }
+    }
+    return response
+}
 
 export async function requestToken(username, password) {
     const response = await fetch(`${API_BASE_URL}/login`, {
@@ -11,7 +26,8 @@ export async function requestToken(username, password) {
             password: password
         })
     });
-    return response.json();
+
+    return responseHandler(response.json());
 }
 
 export async function deleteToken(token) {
@@ -19,30 +35,45 @@ export async function deleteToken(token) {
         method: 'GET',
         headers: {
             'Authorization': `Basic ${token}`,
-            'Content-Type': 'application/x-www-form-urlencoded'
         }
     });
-    return response.json();
+    return responseHandler(response.json());
 }
+
+
+//Directory APIs
+
 
 async function fetchDirectory(path, token) {
     const response = await fetch(`${API_BASE_URL}/${path}`, {
         method: 'GET',
         headers: {
-            'Authorization': `Basic ${btoa(`admin:${token}`)}`
+            'Authorization': `Basic ${token}`
         }
     });
-    return response.json();
+    return responseHandler(response.json());
 }
 
-async function fetchFile(path, token, format = '') {
-    const response = await fetch(`${API_BASE_URL}/${path}?format=${format}`, {
-        method: 'GET',
+async function createDirectory(path, token) {
+    const response = await fetch(`${API_BASE_URL}/${path}`, {
+        method: 'POST',
         headers: {
-            'Authorization': `Basic ${btoa(`admin:${token}`)}`
-        }
+            'Authorization': `Basic ${token}`,
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+            type: 'dir'
+        })
     });
-    return response.json();
+    return responseHandler(response.json());
 }
 
-// Add more API functions as needed
+async function deleteDirectory(path, token) {
+    const response = await fetch(`${API_BASE_URL}/${path}`, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Basic ${token}`
+        }
+    });
+    return responseHandler(response.json());
+}

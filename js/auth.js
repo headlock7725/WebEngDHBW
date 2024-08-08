@@ -17,16 +17,10 @@ async function login(username, password) {
 }
 
 export async function logout() {
-    const result = await deleteToken(localStorage.getItem("authToken"));
-
-    if (!result.message.includes("failed")){
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('authExpire')
-        location.reload();
-    }
-    else{
-        alert("Error: Could not log out!")
-    }
+    await deleteToken(localStorage.getItem("authToken"));
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('authExpire')
+    location.reload();
 }
 
 export function loginValidator(){
@@ -57,12 +51,14 @@ export function loginValidator(){
         loginContainer.style.display = 'none';
         mainContent.style.display = 'block';
     }
+    else{
+        loginContainer.style.display = 'block';
+        mainContent.style.display = 'none';
+    }
 
     // check if token already expired:
     const expiration = localStorage.getItem('authExpire')
-    if(expiration <= Date.now()){
-        deleteToken(token);
-        loginContainer.style.display = 'block';
-        mainContent.style.display = 'none';
+    if(expiration <= Date.now() && expiration != null){
+        logout();
     }
 }
