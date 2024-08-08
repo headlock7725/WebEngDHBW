@@ -1,5 +1,12 @@
-async function listDirectories(params) {
-    
+async function listDirectories(path, token) {
+    const response = await fetch(`${API_BASE_URL}/${path}`, {
+        method: "GET",
+        headers: {
+            'Authorization': `Basic ${btoa(`admin:${token}`)}`,
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    })
+    return response.json();
 }
 
 

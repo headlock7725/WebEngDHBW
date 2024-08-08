@@ -1,15 +1,26 @@
 const API_BASE_URL = 'http://localhost:8080';
 
-async function requestToken(username, password) {
+export async function requestToken(username, password) {
     const response = await fetch(`${API_BASE_URL}/login`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/x-www-form-urlencoded',
         },
         body: new URLSearchParams({
             username: username,
             password: password
         })
+    });
+    return response.json();
+}
+
+export async function deleteToken(token) {
+    const response = await fetch(`${API_BASE_URL}/logout`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Basic ${token}`,
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
     });
     return response.json();
 }

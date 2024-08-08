@@ -1,5 +1,6 @@
 import{
-    loginValidator
+    loginValidator,
+    logout
 }
 from './auth.js'
 
@@ -7,3 +8,7 @@ from './auth.js'
 document.addEventListener('DOMContentLoaded', () => {
     loginValidator();
 });
+
+
+// Click Attachments
+document.getElementById('logout-button').addEventListener('click', logout);

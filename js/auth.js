@@ -1,25 +1,31 @@
-async function requestToken(username, password) {
-    const response = await fetch('http://localhost:8080/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: new URLSearchParams({
-            username: username,
-            password: password
-        })
-    });
-    return response.json();
+import{
+    requestToken,
+    deleteToken
 }
+from './api.js'
 
 async function login(username, password) {
     const result = await requestToken(username, password);
     if (result.token) {
-        localStorage.setItem('authToken', result.token);
+        localStorage.setItem('authToken', btoa(`${username}:${result.token}`));
+        localStorage.setItem('authExpire', Date.now() + 600000);
         return true;
     } else {
         console.error('Authentication failed');
         return false;
+    }
+}
+
+export async function logout() {
+    const result = await deleteToken(localStorage.getItem("authToken"));
+
+    if (!result.message.includes("failed")){
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('authExpire')
+        location.reload();
+    }
+    else{
+        alert("Error: Could not log out!")
     }
 }
 
@@ -50,5 +56,13 @@ export function loginValidator(){
     if (token) {
         loginContainer.style.display = 'none';
         mainContent.style.display = 'block';
+    }
+
+    // check if token already expired:
+    const expiration = localStorage.getItem('authExpire')
+    if(expiration <= Date.now()){
+        deleteToken(token);
+        loginContainer.style.display = 'block';
+        mainContent.style.display = 'none';
     }
 }
