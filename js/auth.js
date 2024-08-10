@@ -4,6 +4,11 @@ import{
 }
 from './api.js'
 
+import {
+    renderUI
+  }
+  from './ui.js'
+
 async function login(username, password) {
     const result = await requestToken(username, password);
     if (result.token) {
@@ -18,8 +23,7 @@ async function login(username, password) {
 
 export async function logout() {
     await deleteToken(localStorage.getItem("authToken"));
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('authExpire')
+    localStorage.clear();
     location.reload();
 }
 
@@ -39,6 +43,7 @@ export function loginValidator(){
         if (success) {
             loginContainer.style.display = 'none';
             mainContent.style.display = 'block';
+            renderUI();
         } else {
             errorMessage.textContent = 'Invalid username or password';
             errorMessage.style.display = 'block';
@@ -57,8 +62,11 @@ export function loginValidator(){
     }
 
     // check if token already expired:
-    const expiration = localStorage.getItem('authExpire')
+    const expiration = parseInt(localStorage.getItem('authExpire'))
     if(expiration <= Date.now() && expiration != null){
         logout();
+    }
+    else if (expiration != null){
+        localStorage.setItem('authExpire', expiration + 600000);
     }
 }

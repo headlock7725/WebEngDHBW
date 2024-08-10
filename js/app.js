@@ -4,6 +4,11 @@ import{
 }
 from './auth.js'
 
+import {
+  renderUI
+}
+from './ui.js'
+
 //Removes blinking login page on refresh
 function showContent(){
     const content = document.getElementsByClassName('app');
@@ -19,6 +24,9 @@ if (document.readyState === 'complete') {
 // Check if user is logged in and show login page if not
 document.addEventListener('DOMContentLoaded', () => {
     loginValidator();
+    if (localStorage.authToken){
+      renderUI();
+    }
 });
 
 // Click Attachments

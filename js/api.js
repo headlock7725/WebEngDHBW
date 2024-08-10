@@ -7,6 +7,7 @@ const API_BASE_URL = 'http://localhost:8080';
 
 //Function to deal with errors in requests or unauthorized requests
 function responseHandler(response) {
+    console.log(response);
     if (response.error){
         if (response.error.includes("auth")){
             logout();
@@ -27,7 +28,7 @@ export async function requestToken(username, password) {
         })
     });
 
-    return responseHandler(response.json());
+    return responseHandler(await response.json());
 }
 
 export async function deleteToken(token) {
@@ -37,21 +38,21 @@ export async function deleteToken(token) {
             'Authorization': `Basic ${token}`,
         }
     });
-    return responseHandler(response.json());
+    return responseHandler(await response.json());
 }
 
 
 //Directory APIs
 
 
-async function fetchDirectory(path, token) {
-    const response = await fetch(`${API_BASE_URL}/${path}`, {
+export async function fetchDirectory(path, token) {
+    const response = await fetch(`${API_BASE_URL}${path}`, {
         method: 'GET',
         headers: {
             'Authorization': `Basic ${token}`
         }
     });
-    return responseHandler(response.json());
+    return responseHandler(await response.json());
 }
 
 async function createDirectory(path, token) {
@@ -65,7 +66,7 @@ async function createDirectory(path, token) {
             type: 'dir'
         })
     });
-    return responseHandler(response.json());
+    return responseHandler(await response.json());
 }
 
 async function deleteDirectory(path, token) {
@@ -75,5 +76,5 @@ async function deleteDirectory(path, token) {
             'Authorization': `Basic ${token}`
         }
     });
-    return responseHandler(response.json());
+    return responseHandler(await response.json());
 }
