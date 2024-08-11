@@ -1,16 +1,45 @@
 /* Basic styles for the application */
 body {
     font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    width: 100%;
     background-color: #f4f4f4;
     overflow-x: hidden;
+    display: block;
+    padding: 0;
+    margin: 0;
 }
 
 #hidden{
     display: none;
 }
+
+/* PopUp styles */
+
+.popups {
+    max-width: 25vw;
+    margin: auto;
+    margin-top: 25vh;
+    padding: 20px;
+    flex: 1;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+[id*="_diraction"] {
+    min-width: 4vw;
+    min-height: 3vh;
+    background-color: #8A4FFF;
+    color: white;
+    border: none;
+    padding: 1vh 1vw;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  [id*="_diraction"]:hover {
+    background-color: #7634fa;
+  }
 
 /* Login styles */
 
@@ -95,9 +124,34 @@ header {
 /* Sidebar styles */
 
 .sidebar {
-    width: 30vh;
+    min-width: 10vw;
     background-color: #C3BEF7;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     height: 100vh;
+}
+
+#currentDir {
+    font-weight: bold;
+    color: #333;
+    font-size: 16px;
+    padding: 10px 20px; /* Add padding for space around text */
+    background-color: #f0f0f0; /* Light gray background */
+    border-radius: 5px; /* Rounded corners */
+    display: inline-block; /* Make it a block element for styling */
+    margin-top: auto;
+    margin-bottom: 10vh;
+  }
+
+
+/* Media styles */
+
+video{
+    max-width: 500px;
+    max-height: 500px;
+}
+
+image{
+    max-width: 500px;
+    max-height: 500px;
 }

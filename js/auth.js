@@ -28,6 +28,7 @@ export async function logout() {
 }
 
 export function loginValidator(){
+    const header = document.getElementById('header');
     const loginForm = document.getElementById('login-form');
     const errorMessage = document.getElementById('error-message');
     const loginContainer = document.getElementById('login-container');
@@ -42,7 +43,8 @@ export function loginValidator(){
         const success = await login(username, password);
         if (success) {
             loginContainer.style.display = 'none';
-            mainContent.style.display = 'block';
+            mainContent.style.display = 'flex';
+            header.style.display = 'flex';
             renderUI();
         } else {
             errorMessage.textContent = 'Invalid username or password';
@@ -54,11 +56,13 @@ export function loginValidator(){
     const token = localStorage.getItem('authToken');
     if (token) {
         loginContainer.style.display = 'none';
-        mainContent.style.display = 'block';
+        mainContent.style.display = 'flex';
+        header.style.display = 'flex';
     }
     else{
         loginContainer.style.display = 'block';
         mainContent.style.display = 'none';
+        header.style.display = 'none';
     }
 
     // check if token already expired:

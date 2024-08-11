@@ -9,6 +9,7 @@ const API_BASE_URL = 'http://localhost:8080';
 function responseHandler(response) {
     console.log(response);
     if (response.error){
+        alert(response.error);
         if (response.error.includes("auth")){
             logout();
         }
@@ -55,8 +56,8 @@ export async function fetchDirectory(path, token) {
     return responseHandler(await response.json());
 }
 
-async function createDirectory(path, token) {
-    const response = await fetch(`${API_BASE_URL}/${path}`, {
+export async function createDirectory(path, token) {
+    const response = await fetch(`${API_BASE_URL}${path}`, {
         method: 'POST',
         headers: {
             'Authorization': `Basic ${token}`,
@@ -69,8 +70,55 @@ async function createDirectory(path, token) {
     return responseHandler(await response.json());
 }
 
-async function deleteDirectory(path, token) {
-    const response = await fetch(`${API_BASE_URL}/${path}`, {
+export async function deleteDirectory(path, token) {
+    const response = await fetch(`${API_BASE_URL}${path}`, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Basic ${token}`
+        }
+    });
+    return responseHandler(await response.json());
+}
+
+
+// File APIs
+
+
+export async function getFileContent(path, token, base64 = false) {
+    let url = API_BASE_URL
+
+    if (base64){
+        url += '?format=base64'
+    }
+
+    const response = await fetch(`${url}${path}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Basic ${token}`
+        },
+        
+    });
+
+    return responseHandler(response.body);
+}
+
+
+export async function uploadFile(file, path, token) {
+    const formData = new FormData();
+    formData.append('newFile', file);
+
+    const response = await fetch(`${API_BASE_URL}${path}${file.name}`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Basic ${token}`
+        },
+        body: formData
+    });
+    return responseHandler(await response.json());
+}
+
+async function deleteFile(path, token) {
+    const response = await fetch(`${API_BASE_URL}${path}`, {
         method: 'DELETE',
         headers: {
             'Authorization': `Basic ${token}`
